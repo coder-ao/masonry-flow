@@ -1,6 +1,6 @@
 # @neruco/masonry-flow
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-blue)](https://coder-ao.github.io/masonry-flow/)]
+[![Live Demo](https://img.shields.io/badge/Live-Demo-blue)](https://coder-ao.github.io/masonry-flow/)
 
 [![npm version](https://img.shields.io/npm/v/@neruco/masonry-flow)]
 [![license](https://img.shields.io/npm/l/@neruco/masonry-flow)]
