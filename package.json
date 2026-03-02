@@ -1,6 +1,7 @@
 {
   "name": "@neruco/masonry-flow",
   "version": "0.1.0",
+  "license": "MIT",
   "type": "module",
   "main": "dist/masonry-flow.umd.cjs",
   "module": "dist/masonry-flow.es.js",
@@ -9,6 +10,17 @@
       "import": "./dist/masonry-flow.es.js",
       "require": "./dist/masonry-flow.umd.cjs"
     }
+  },
+  "sideEffects": [
+    "./src/masonry.css"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/coder-ao/masonry-flow.git"
+  },
+  "homepage": "https://coder-ao.github.io/masonry-flow/",
+  "bugs": {
+    "url": "https://github.com/coder-ao/masonry-flow/issues"
   },
   "scripts": {
     "dev": "vite",
@@ -20,5 +32,14 @@
     "src/masonry.css",
     "README.md",
     "LICENSE"
+  ],
+  "keywords": [
+    "masonry",
+    "pinterest",
+    "layout",
+    "grid",
+    "javascript",
+    "wordpress",
+    "vanilla-js"
   ]
 }
