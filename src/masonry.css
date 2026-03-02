@@ -1,0 +1,12 @@
+[data-masonry].is-mf-loading {
+  visibility: hidden;
+  opacity: 0;
+  content-visibility: hidden;
+}
+
+[data-masonry].is-mf-ready {
+  visibility: visible;
+  opacity: 1;
+  content-visibility: visible;
+  transition: opacity 200ms ease;
+}

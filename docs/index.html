@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>@neruco/masonry Demo</title>
+
+  <!-- ライブラリCSS（is-mf-loading / is-mf-ready） -->
+  <link rel="stylesheet" href="./assets/masonry.css">
+
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 24px; }
+    h1 { margin: 0 0 16px; font-size: 20px; }
+    .wrap { width: min(1100px, 100%); margin: 0 auto; }
+
+    .controls {
+      display: grid; gap: 12px; padding: 14px;
+      border: 1px solid #e5e7eb; border-radius: 12px; background: #fff;
+      position: sticky; top: 16px; z-index: 10;
+      box-shadow: 0 6px 18px rgba(0,0,0,.06);
+      margin-bottom: 16px;
+    }
+    .controls__row { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center; }
+    .controls__label {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 10px; border: 1px solid #e5e7eb; border-radius: 10px;
+      background: #fafafa; font-size: 13px;
+    }
+    .controls__field {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 8px 10px; border: 1px solid #e5e7eb; border-radius: 10px;
+      background: #fafafa; font-size: 13px;
+    }
+    .controls__field input[type="range"] { width: 180px; }
+    .controls__btns { display: flex; flex-wrap: wrap; gap: 10px; margin-left: auto; }
+    .btn {
+      appearance: none; border: 1px solid #e5e7eb;
+      background: #111827; color: #fff;
+      padding: 9px 12px; border-radius: 10px;
+      font-size: 13px; cursor: pointer;
+    }
+    .btn--sub { background: #fff; color: #111827; }
+    .status {
+      font-size: 12px; color: #374151;
+      background: #f9fafb; border: 1px dashed #e5e7eb;
+      border-radius: 10px; padding: 10px;
+      white-space: pre-wrap; line-height: 1.5;
+    }
+
+    .masonry { width: 100%; margin: 0 auto; }
+    .masonry__item { display: block; border-radius: 12px; overflow: hidden; background: #f3f4f6; }
+    .masonry__item img { width: 100%; height: auto; display: block; }
+
+    /* スクロール連動フェード：transform衝突回避で inner に演出 */
+    .masonry__inner{
+      display:block;
+      opacity:0;
+      transform: translateY(10px);
+      transition: opacity 280ms ease, transform 280ms ease;
+      will-change: opacity, transform;
+    }
+    .masonry__item.is-inview .masonry__inner{
+      opacity:1;
+      transform: translateY(0);
+    }
+    @media (prefers-reduced-motion: reduce){
+      .masonry__inner{ transition:none; transform:none; opacity:1; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <h1>@neruco/masonry Demo</h1>
+
+    <div class="controls">
+      <div class="controls__row">
+        <label class="controls__label">
+          <input type="checkbox" id="uiFade" checked> fade
+        </label>
+        <label class="controls__label">
+          <input type="checkbox" id="uiStagger" checked> stagger
+        </label>
+        <label class="controls__label">
+          <input type="checkbox" id="uiInView" checked> in-view reveal
+        </label>
+
+        <div class="controls__field">
+          <span>staggerDelay</span>
+          <input type="range" id="uiStaggerDelay" min="0" max="200" step="10" value="80">
+          <strong><span id="uiStaggerDelayVal">80</span>ms</strong>
+        </div>
+
+        <div class="controls__field">
+          <span>fadeDuration</span>
+          <input type="range" id="uiFadeDuration" min="0" max="800" step="20" value="240">
+          <strong><span id="uiFadeDurationVal">240</span>ms</strong>
+        </div>
+
+        <div class="controls__field">
+          <span>resizeDebounce</span>
+          <input type="range" id="uiDebounce" min="0" max="400" step="20" value="120">
+          <strong><span id="uiDebounceVal">120</span>ms</strong>
+        </div>
+
+        <div class="controls__btns">
+          <button class="btn btn--sub" id="btnAdd">+ Add 12</button>
+          <button class="btn btn--sub" id="btnResetView">Reset in-view</button>
+          <button class="btn" id="btnApply">Apply</button>
+        </div>
+      </div>
+
+      <div class="status" id="status"></div>
+    </div>
+
+    <div class="masonry is-mf-loading"
+      data-masonry
+      data-start-on-load="true"
+      data-fade="true"
+      data-fade-duration="240"
+      data-stagger="true"
+      data-stagger-delay="80"
+      data-resize-debounce="120"
+    >
+      <a class="masonry__item" href="#"><span class="masonry__inner"><img loading="lazy" src="https://picsum.photos/400/520?1" alt=""></span></a>
+      <a class="masonry__item" href="#"><span class="masonry__inner"><img loading="lazy" src="https://picsum.photos/400/300?2" alt=""></span></a>
+      <a class="masonry__item" href="#"><span class="masonry__inner"><img loading="lazy" src="https://picsum.photos/400/650?3" alt=""></span></a>
+      <a class="masonry__item" href="#"><span class="masonry__inner"><img loading="lazy" src="https://picsum.photos/400/360?4" alt=""></span></a>
+      <a class="masonry__item" href="#"><span class="masonry__inner"><img loading="lazy" src="https://picsum.photos/400/480?5" alt=""></span></a>
+      <a class="masonry__item" href="#"><span class="masonry__inner"><img loading="lazy" src="https://picsum.photos/400/410?6" alt=""></span></a>
+      <a class="masonry__item" href="#"><span class="masonry__inner"><img loading="lazy" src="https://picsum.photos/400/520?7" alt=""></span></a>
+      <a class="masonry__item" href="#"><span class="masonry__inner"><img loading="lazy" src="https://picsum.photos/400/300?8" alt=""></span></a>
+      <a class="masonry__item" href="#"><span class="masonry__inner"><img loading="lazy" src="https://picsum.photos/400/650?9" alt=""></span></a>
+      <a class="masonry__item" href="#"><span class="masonry__inner"><img loading="lazy" src="https://picsum.photos/400/360?10" alt=""></span></a>
+      <a class="masonry__item" href="#"><span class="masonry__inner"><img loading="lazy" src="https://picsum.photos/400/480?11" alt=""></span></a>
+      <a class="masonry__item" href="#"><span class="masonry__inner"><img loading="lazy" src="https://picsum.photos/400/410?12" alt=""></span></a>
+    </div>
+  </div>
+
+  <!-- IIFE -->
+  <script src="./assets/masonry-flow.iife.js"></script>
+  <script>
+    const root = document.querySelector("[data-masonry]");
+    const ui = {
+      fade: document.getElementById("uiFade"),
+      stagger: document.getElementById("uiStagger"),
+      inView: document.getElementById("uiInView"),
+      staggerDelay: document.getElementById("uiStaggerDelay"),
+      staggerDelayVal: document.getElementById("uiStaggerDelayVal"),
+      fadeDuration: document.getElementById("uiFadeDuration"),
+      fadeDurationVal: document.getElementById("uiFadeDurationVal"),
+      debounce: document.getElementById("uiDebounce"),
+      debounceVal: document.getElementById("uiDebounceVal"),
+      status: document.getElementById("status"),
+      btnApply: document.getElementById("btnApply"),
+      btnAdd: document.getElementById("btnAdd"),
+      btnResetView: document.getElementById("btnResetView"),
+    };
+
+    let instance = null;
+    let io = null;
+
+    function setupInViewObserver() {
+      if (io) io.disconnect();
+      io = null;
+      if (!ui.inView.checked) {
+        root.querySelectorAll(".masonry__item").forEach(el => el.classList.add("is-inview"));
+        return;
+      }
+
+      io = new IntersectionObserver((entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          e.target.classList.add("is-inview");
+          io.unobserve(e.target);
+        }
+      }, { root: null, rootMargin: "0px 0px -10% 0px", threshold: 0.01 });
+
+      root.querySelectorAll(".masonry__item").forEach(el => io.observe(el));
+    }
+
+    function resetInView() {
+      root.querySelectorAll(".masonry__item").forEach(el => el.classList.remove("is-inview"));
+      setupInViewObserver();
+    }
+
+    function syncStatus() {
+      ui.staggerDelayVal.textContent = ui.staggerDelay.value;
+      ui.fadeDurationVal.textContent = ui.fadeDuration.value;
+      ui.debounceVal.textContent = ui.debounce.value;
+
+      ui.status.textContent =
+`data-fade="${root.dataset.fade}"
+data-fade-duration="${root.dataset.fadeDuration}"
+data-stagger="${root.dataset.stagger}"
+data-stagger-delay="${root.dataset.staggerDelay}"
+data-resize-debounce="${root.dataset.resizeDebounce}"
+in-view="${ui.inView.checked ? "true" : "false"}"`;
+    }
+
+    function boot() {
+      if (instance) instance.destroy();
+      root.classList.add("is-mf-loading");
+      root.classList.remove("is-mf-ready");
+
+      instance = new NerucoMasonry.NerucoMasonry(root); // ← IIFEの形
+      resetInView();
+      syncStatus();
+    }
+
+    // 初期起動
+    syncStatus();
+    boot();
+
+    ui.btnApply.addEventListener("click", () => {
+      root.dataset.fade = ui.fade.checked ? "true" : "false";
+      root.dataset.stagger = ui.stagger.checked ? "true" : "false";
+      root.dataset.staggerDelay = String(ui.staggerDelay.value);
+      root.dataset.fadeDuration = String(ui.fadeDuration.value);
+      root.dataset.resizeDebounce = String(ui.debounce.value);
+      boot();
+    });
+
+    ui.inView.addEventListener("change", () => {
+      setupInViewObserver();
+      syncStatus();
+    });
+
+    ui.btnResetView.addEventListener("click", () => {
+      resetInView();
+      syncStatus();
+    });
+
+    ui.btnAdd.addEventListener("click", async () => {
+      const base = Date.now();
+      const list = [];
+
+      for (let i = 0; i < 12; i++) {
+        const id = base + i;
+        const h = 260 + Math.floor(Math.random() * 520);
+
+        const a = document.createElement("a");
+        a.className = "masonry__item";
+        a.href = "#";
+        a.innerHTML = `<span class="masonry__inner"><img loading="lazy" src="https://picsum.photos/400/${h}?${id}" alt=""></span>`;
+        list.push(a);
+      }
+
+      await instance.append(list);
+
+      if (ui.inView.checked && io) list.forEach(el => io.observe(el));
+      else list.forEach(el => el.classList.add("is-inview"));
+    });
+
+    ["input","change"].forEach(evt => {
+      ui.staggerDelay.addEventListener(evt, syncStatus);
+      ui.fadeDuration.addEventListener(evt, syncStatus);
+      ui.debounce.addEventListener(evt, syncStatus);
+    });
+  </script>
+</body>
+</html>
