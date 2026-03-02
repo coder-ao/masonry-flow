@@ -203,7 +203,7 @@ in-view="${ui.inView.checked ? "true" : "false"}"`;
       root.classList.add("is-mf-loading");
       root.classList.remove("is-mf-ready");
 
-      instance = new NerucoMasonry.NerucoMasonry(root); // ← IIFEの形
+      instance = new MasonryFlow.MasonryFlow(root); // ← IIFEの形
       resetInView();
       syncStatus();
     }
